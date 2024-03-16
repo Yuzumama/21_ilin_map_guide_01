@@ -38,7 +38,8 @@
         </div>
         <div id="user_hint_bubble_back" class="user_hint_bubble_back_style">
             <div id="user_hint_bubble" class="user_hint_bubble_style">
-                こんにちは！ともだちのリスだよ。
+                ようこそ、<br>
+                もりのあんぜんきち！
             </div>
             <div id="user_hint_ok" class="user_hint_ok_style"></div>
         </div>
@@ -51,8 +52,9 @@
             </div>
             <div class="reset_hint_text_back_style">
                 <div class="reset_hint_text_style">
-                    ただしいばしょをかくにんするため、けいたいをてのひらにおいてね。
-                    あとは、きたのほうにみて、コンパスをおしてね。
+                    ただしいばしょをかくにんするため、
+                    <br>けいたいをてのひらによこにおいてね。<br>
+                    <br>あとは、きたのほうにみて、コンパスをおしてね。
                 </div>
             </div>
         </div>
@@ -209,12 +211,13 @@
     // Show user hint
     let curr_user_hint_index = 0;
     let user_hint_messages = new Array();
+    user_hint_messages.push("こんにちは！　　　　ともだちのリスだよ！");
     user_hint_messages.push("きょう、いっしょにあなたをまもるばしょをさがそう！！");
     user_hint_messages.push("まず、わたしのなかまをしょうかいしよう！");
-    user_hint_messages.push("いちばんひだりがわのはねこちゃんだ！");
-    user_hint_messages.push("ねこちゃんはこんぱすをもっている。");
+    user_hint_messages.push("いちばんひだりがわのは、ねこちゃんだ！");
+    user_hint_messages.push("ねこちゃんは、こんぱすをもっている。");
     user_hint_messages.push("ばしょがわからないとき、ねこちゃんをおしてね！");
-    user_hint_messages.push("つぎはぶたくん！ぶたくんをおしたら、ちずがでるよ！");
+    user_hint_messages.push("つぎは、ぶたくん！ぶたくんをおしたら、ちずがでるよ！");
     user_hint_messages.push("さあ～じゅんびができたか？　いこう！！");
 
     $("#user_hint_ok").on("click", function () {

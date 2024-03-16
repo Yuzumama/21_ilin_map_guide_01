@@ -118,11 +118,12 @@ body {
 
 .score_style {
     content: "";
-    width: 109px;
-    height: 138px;
+    width: 99px;
+    height: 128px;
     background-image: url("../img/seed.png");
     background-size: cover;
     background-position: center;
+    margin-right: 25px;
 }
 
 /* frame of video */
@@ -260,8 +261,8 @@ body {
     content: "";
     position: relative;
     left: 0px;
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-width: 0px;
     background-color: rgba(0,0,0,0.0);
     background-image: url("../img/neko.png");
@@ -274,8 +275,8 @@ body {
     content: "";
     position: relative;
     left: 0px;
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     margin-left: 55px;
     border-width: 0px;
     background-color: rgba(0,0,0,0.0);
@@ -313,6 +314,7 @@ body {
     display: flexbox;
     justify-content: center;
     align-items: flex-start;
+    opacity: 0.8;
 }
 
 .reset_hint_image_back_style {
@@ -325,8 +327,8 @@ body {
 }
 
 .reset_hint_image_style {
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
     overflow: hidden;
     border-radius: 10px;
     background-image: url("../img/compass_north.png");
@@ -346,8 +348,9 @@ body {
 .reset_hint_text_style {
     margin-left: 10px;
     width: 460px;
-    color: #880000;
+    color: rgb(102, 113, 51);
     font-size: 50px;
+    font-weight: bold;
 }
 
 
@@ -421,8 +424,8 @@ body {
     position: relative;
     left: 400px;
     top: 95px;
-    width: 120px;
-    height: 60px;
+    width: 100px;
+    height: 40px;
     background-image: url("../img/yes_bottom_2.png");
     background-size: cover;
     background-position: center;
