@@ -429,9 +429,8 @@
 
             // See direction
             if (vecToDestInCamera.z < 0.0) {
-                $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_short_style");
-                $("#user_hint_bubble_tri").attr("class", "user_hint_bubble_tri_short_style");
-                $("#user_hint_bubble").attr("class", "user_hint_bubble_short_style");
+                $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_style");
+                $("#user_hint_bubble").attr("class", "user_hint_bubble_style");
                 $("#user_hint_bubble").text("目的地は後ろだよ！");
                 $("#user_hint_ok").attr("class", "empty");
 
@@ -442,9 +441,8 @@
             // See distance
             else if (distToDest < distToApproach)
             {
-                $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_short_style");
-                $("#user_hint_bubble_tri").attr("class", "user_hint_bubble_tri_short_style");
-                $("#user_hint_bubble").attr("class", "user_hint_bubble_short_style");
+                $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_style");
+                $("#user_hint_bubble").attr("class", "user_hint_bubble_style");
                 $("#user_hint_bubble").text("目的地に着いたよ！");
                 $("#user_hint_ok").attr("class", "empty");
 
