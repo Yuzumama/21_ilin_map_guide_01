@@ -44,14 +44,10 @@
             <div class="reset_hint_image_back_style">
                 <div class="reset_hint_image_style"></div>
             </div>
-            <div id="reset_ok_btn_back" class="reset_ok_btn_back_style">
-                <button id="reset_ok_btn" class="reset_ok_btn_style"> Reset </button>
-            </div>
         </div>
     </div>
     <div id="my_map_back" class="empty">
         <div id="my_map" class="my_map_style"></div>
-        <div class="my_map_frame_style"></div>
     </div>
 
 </body>
@@ -257,6 +253,7 @@
     let reset_menu_shows = false;
     $("#reset_direction_btn").on("click", function () {
         if (reset_menu_shows) {
+            degree_need_initialized = true;
             $("#reset_hint_menu").attr("class", "empty");
             reset_menu_shows = false;
         }
@@ -265,11 +262,6 @@
             reset_menu_shows = true;
         }
         
-    });
-
-    $("#reset_ok_btn").on("click", function () {
-        degree_need_initialized = true;
-        $("#reset_hint_menu").attr("class", "empty");
     });
 
     // Map is show or hide
@@ -370,13 +362,14 @@
         let yCoord = (vecToDestInCamera2.y * -1.0) * 0.5 + 0.5; // -1 ~ 1 -> 0 ~ 1
         let xPosInVideo = xCoord * videoWidth;  // 0 ~ 1 -> 0 ~ width
         let yPosInVideo = yCoord * videoHeight; // 0 ~ 1 -> 0 ~ height
-        let videoPadding = 40;
+        let videoPaddingVer = 100;
+        let videoPaddingHor = 40;
         let destWidth = parseInt($("#dest_01").css("width"));
         let destHeight = parseInt($("#dest_01").css("height"));
-        let isDestOutsideVideo = (xPosInVideo < videoPadding || xPosInVideo > videoWidth - videoPadding ||
-                                  yPosInVideo < videoPadding || yPosInVideo > videoHeight - videoPadding);
-        let xPosInVideoClamp = Math.max(Math.min(xPosInVideo, videoWidth - videoPadding), videoPadding);
-        let yPosInVideoClamp = videoHeight - Math.max(Math.min(yPosInVideo, videoHeight - videoPadding), videoPadding);
+        let isDestOutsideVideo = (xPosInVideo < videoPaddingHor || xPosInVideo > videoWidth - videoPaddingHor ||
+                                  yPosInVideo < videoPaddingVer || yPosInVideo > videoHeight - videoPaddingVer);
+        let xPosInVideoClamp = Math.max(Math.min(xPosInVideo, videoWidth - videoPaddingHor), videoPaddingHor);
+        let yPosInVideoClamp = videoHeight - Math.max(Math.min(yPosInVideo, videoHeight - videoPaddingVer), videoPaddingVer);
 
         let tanValue = vecToDestInCamera2.x / vecToDestInCamera2.y;
         let tanAngle = Math.atan(tanValue);

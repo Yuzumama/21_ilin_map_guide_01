@@ -32,7 +32,7 @@ body {
     justify-content: center;
     border-radius: 10px;
     border-width: 0px;
-    margin-top: 30px;
+    margin-top: 80px;
     margin-bottom: 30px;
 }
 
@@ -67,7 +67,7 @@ body {
     position: relative;
     transform: translate(-800px, -800px);
     background-color: rgba(0,0,0,0);
-    z-index: 2;
+    z-index: 7;
 }
 
 .dest_back_style {
@@ -254,26 +254,29 @@ body {
 
 /* reset direction menu */
 .reset_hint_menu_style {
-    width: 535px;
-    height: 790px;
+    width: 758px;
+    height: 1469px;
     background-color: rgba(180, 210, 240, 1);
     display: flexbox;
     justify-content: center;
     align-items: flex-start;
     position: absolute;
-    top: 100px;
+    top: 156px;
+    border-radius: 20px;
     z-index: 5;
+    overflow: hidden;
 }
 
 .reset_hint_menu_frame_style {
     position: relative;
-    left: -32px;
-    top: -30px;
-    width: 600px;
-    height: 850px;
-    background-image: url("../img/reset_frame_02.png");
-    background-size: 600px;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/compass_frame.png");
+    background-size: 760px;
     background-position: center;
+    background-repeat: no-repeat;
     display: flexbox;
     justify-content: center;
     align-items: flex-start;
@@ -281,17 +284,16 @@ body {
 
 .reset_hint_image_back_style {
     position: relative;
-    top: 70px;
+    top: 700px;
     width: 100%;
-    height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .reset_hint_image_style {
-    width: 500px;
-    height: 680px;
+    width: 600px;
+    height: 600px;
     overflow: hidden;
     border-radius: 10px;
     background-image: url("../img/compass_north.png");
@@ -322,11 +324,12 @@ body {
 /* Character */
 .hint_character_back_style {
     position: relative;
-    top: -300px;
+    top: -306px;
     left: 560px;
     width: 350px;
     height: 250px;    
     overflow: hidden;
+    z-index: 6;
 }
 .hint_character_img_style {
     width: 100%;
@@ -371,6 +374,7 @@ body {
     background-position: center;
     display: flexbox;
     align-items: center;
+    z-index: 6;
 }
 
 .user_hint_bubble_style {
@@ -435,19 +439,5 @@ body {
 .my_map_style {
     width: 100%;
     height: 100%;
-}
-
-.my_map_frame_style {
-    position: relative;
-    left: -32px;
-    top: -820px;
-    width: 600px;
-    height: 850px;
-    background-image: url("../img/reset_frame_02.png");
-    background-size: 600px;
-    background-position: center;
-    display: flexbox;
-    justify-content: center;
-    align-items: flex-start;
-    z-index: 5;
+    z-index: 6;
 }
