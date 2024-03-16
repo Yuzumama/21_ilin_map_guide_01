@@ -30,6 +30,7 @@ https://web.dev/articles/device-orientation?hl=ja
 デバイスの向きをカメラビデオの中に表示するため、three.js のドキュメントを参考して作成しました。
 
 https://threejs.org/docs/#api/en/math/Vector3
+https://threejs.org/docs/#api/en/cameras/PerspectiveCamera
 
 
 ## 難しかった点・次回トライしたいこと(又は機能)
