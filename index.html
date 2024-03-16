@@ -78,7 +78,7 @@
 </script>
 <!-- 3d vectors -->
 
-<script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[ AniMk5fCk4W1_RLIhL9R_sYQLrR2CSTZXeOGOcvczwyrJJx3cYtlPyR8oWt10aPl ]' async defer></script>
+<script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[AniMk5fCk4W1_RLIhL9R_sYQLrR2CSTZXeOGOcvczwyrJJx3cYtlPyR8oWt10aPl]' async defer></script>
 
 <script type="module">
 
@@ -104,31 +104,7 @@
     // A point in 戶山公園
     let destLatitude = 35.7084631;
     let destLongitude = 139.7056623;
-    let destAltitude = 64.2807633264114; // No altitude
-
-    // Add destination on map
-    let destAddedToMap = false;
-    function addDestToMap() {
-        if(map != null){
-            let dest = new Microsoft.Maps.Location(destLatitude, destLongitude);
-
-            let pin = new Microsoft.Maps.Pushpin(dest, {
-                color: "red",
-                draggable:true,          //MouseDraggable
-                enableClickedStyle:false, //Click
-                enableHoverStyle:true,   //MouseOver
-                visible:true    
-            });
-
-            //Add the pushpin to the map
-            map.entities.push(pin);
-        }
-        else {
-            setTimeout(addDestToMap, 1000);
-        }
-    }
-    addDestToMap();
-    
+    let destAltitude = 64.2807633264114; // No altitude    
 
     // Camera object
     let videoWidth = parseInt($("video").css("width"));
@@ -141,6 +117,47 @@
     let vecToDest = new THREE.Vector3(0.0, 0.0, 0.0);
     let vecToDestInCamera = new THREE.Vector4(0.0, 0.0, 0.0, 0.0);
     let vecToDestInCamera2 = new THREE.Vector4(0.0, 0.0, 0.0, 0.0);
+
+    // Add destination on map
+    let destAddedToMap = false;
+    let dest = null;
+    let dest_pin = null;
+    let curr_location = null;
+    let curr_pos_pin = null;
+    function addDestToMap() {
+        if(map != null){
+            dest = new Microsoft.Maps.Location(destLatitude, destLongitude);
+
+            dest_pin = new Microsoft.Maps.Pushpin(dest, {
+                color: "red",
+                draggable:false,          //MouseDraggable
+                enableClickedStyle:false, //Click
+                enableHoverStyle:true,   //MouseOver
+                visible: true    
+            });
+
+            //Add the pushpin to the map
+            map.entities.push(dest_pin);
+
+            curr_location = new Microsoft.Maps.Location(currPos.y, currPos.x);
+
+            curr_pos_pin = new Microsoft.Maps.Pushpin(curr_location, {
+                color: "blue",
+                draggable:false,          //MouseDraggable
+                enableClickedStyle:false, //Click
+                enableHoverStyle:true,   //MouseOver
+                visible:true   
+            });
+
+            //Add the pushpin to the map
+            map.entities.push(curr_pos_pin);
+        }
+        else {
+            // Repeat until bing map api is loaded
+            setTimeout(addDestToMap, 1000);
+        }
+    }
+    addDestToMap();
 
     // Camera forward, right, up
     let cameraForward = new THREE.Vector3(0.0, 0.0, 0.0);
@@ -238,6 +255,24 @@
         currPos.x = currLongitude;
         currPos.y = currLatitude;
         currPos.z = currAltitude;
+
+        if(map != null){
+            curr_location = new Microsoft.Maps.Location(currPos.y, currPos.x);
+
+            // Remove curr pos pin and add again with new current position
+            map.entities.remove(curr_pos_pin);
+            
+            curr_pos_pin = new Microsoft.Maps.Pushpin(curr_location, {
+                color: "blue",
+                draggable:false,          //MouseDraggable
+                enableClickedStyle:false, //Click
+                enableHoverStyle:true,   //MouseOver
+                visible:true   
+            });
+
+            //Add the pushpin to the map
+            map.entities.push(curr_pos_pin);
+        }
     }
 
     // Position fail
@@ -296,8 +331,10 @@
             else {
                 // Update current center in map
                 if (map != null) {
+                    curr_location = new Microsoft.Maps.Location(currPos.y, currPos.x);
+
                     map.setView({
-                        center: new Microsoft.Maps.Location(currPos.y, currPos.x), //Location center position
+                        center: curr_location, //Location center position
                     });
                 }
 
