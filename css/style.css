@@ -67,7 +67,7 @@ body {
     position: relative;
     transform: translate(-800px, -800px);
     background-color: rgba(0,0,0,0);
-    z-index: 7;
+    z-index: 2;
 }
 
 .dest_back_style {
@@ -256,7 +256,7 @@ body {
 .reset_hint_menu_style {
     width: 758px;
     height: 1469px;
-    background-color: rgba(180, 210, 240, 1);
+    background-color: white;
     display: flexbox;
     justify-content: center;
     align-items: flex-start;
@@ -284,7 +284,7 @@ body {
 
 .reset_hint_image_back_style {
     position: relative;
-    top: 700px;
+    top: 300px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -292,8 +292,8 @@ body {
 }
 
 .reset_hint_image_style {
-    width: 600px;
-    height: 600px;
+    width: 300px;
+    height: 300px;
     overflow: hidden;
     border-radius: 10px;
     background-image: url("../img/compass_north.png");
@@ -301,23 +301,20 @@ body {
     background-position: center;
 }
 
-.reset_ok_btn_back_style {
+.reset_hint_text_back_style {
     position: relative;
-    top: 100px;
     width: 100%;
+    top: 360px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.reset_ok_btn_style {
-    width: 450px;
-    height: 80px;
-    font-size: 60px;
-    border-radius: 40px;
-    background-color: rgb(150, 240, 220);
-    box-shadow: -8px -8px 16px 4px inset rgb(50, 50, 50),
-                4px 8px 4px 0px inset rgb(150, 240, 255);
+.reset_hint_text_style {
+    margin-left: 10px;
+    width: 460px;
+    color: #880000;
+    font-size: 50px;
 }
 
 
@@ -389,11 +386,11 @@ body {
 
 .user_hint_ok_style {
     position: relative;
-    left: 360px;
-    top: 100px;
-    width: 100px;
-    height: 100px;
-    background-image: url("../img/yes_bottom.png");
+    left: 400px;
+    top: 95px;
+    width: 120px;
+    height: 60px;
+    background-image: url("../img/yes_bottom_2.png");
     background-size: cover;
     background-position: center;
 }

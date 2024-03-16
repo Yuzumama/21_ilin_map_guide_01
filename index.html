@@ -33,7 +33,7 @@
         </div>
         <div id="user_hint_bubble_back" class="user_hint_bubble_back_style">
             <div id="user_hint_bubble" class="user_hint_bubble_style">
-                やぁ！　私は、リス。一緒に旅をするパートナーだよ。
+                こんにちは！ともだちのリスだよ。
             </div>
             <div id="user_hint_ok" class="user_hint_ok_style"></div>
         </div>
@@ -42,7 +42,13 @@
     <div id="reset_hint_menu" class="empty">
         <div class="reset_hint_menu_frame_style">
             <div class="reset_hint_image_back_style">
-                <div class="reset_hint_image_style"></div>
+                <div id="reset_hint_image" class="reset_hint_image_style"></div>
+            </div>
+            <div class="reset_hint_text_back_style">
+                <div class="reset_hint_text_style">
+                    ただしいばしょをかくにんするため、けいたいをてのひらにおいてね。
+                    あとは、きたのほうにみて、コンパスをおしてね。
+                </div>
             </div>
         </div>
     </div>
@@ -181,17 +187,17 @@
     // Show user hint
     let curr_user_hint_index = 0;
     let user_hint_messages = new Array();
-    user_hint_messages.push("これから、一緒に旅しよう！");
-    user_hint_messages.push("今からカメラをオンにするね");
-    user_hint_messages.push("どう？カメラの画面が映っているだろう？");
-    user_hint_messages.push("カメラ画面の中で、三角形の標示がある");
-    user_hint_messages.push("それが、目的地へのしるしだ！");
-    user_hint_messages.push("その三角形の標示に従って、目的地に行ってみよう");
-    user_hint_messages.push("Go! Go! Go!");
+    user_hint_messages.push("きょう、いっしょにあなたをまもるばしょをさがそう！！");
+    user_hint_messages.push("まず、わたしのなかまをしょうかいしよう！");
+    user_hint_messages.push("いちばんひだりがわのはねこちゃんだ！");
+    user_hint_messages.push("ねこちゃんはこんぱすをもっている。");
+    user_hint_messages.push("ばしょがわからないとき、ねこちゃんをおしてね！");
+    user_hint_messages.push("つぎはぶたくん！ぶたくんをおしたら、ちずがでるよ！");
+    user_hint_messages.push("さあ～じゅんびができたか？　いこう！！");
 
     $("#user_hint_ok").on("click", function () {
 
-        if (curr_user_hint_index == 2) {
+        if (curr_user_hint_index == 6) {
             turnOnCamera();
             $("#all_dests").attr("class", "all_dests_style");
         }
@@ -203,7 +209,6 @@
         else {
             // Hide the bubble
             $("#user_hint_bubble_back").attr("class", "empty");
-            $("#user_hint_ok").attr("class", "empty");
 
             // Stop the animation
             $("#hint_character_img").attr("class", "hint_character_img_style");
@@ -251,38 +256,51 @@
 
     // Show/hide reset menu
     let reset_menu_shows = false;
+    let map_shows = false;
     $("#reset_direction_btn").on("click", function () {
-        if (reset_menu_shows) {
-            degree_need_initialized = true;
-            $("#reset_hint_menu").attr("class", "empty");
-            reset_menu_shows = false;
+        if(!map_shows){
+            if (reset_menu_shows) {
+                $("#reset_hint_menu").attr("class", "empty");
+                $("#show_map_btn").css("opacity", "1.0");
+                reset_menu_shows = false;
+            }
+            else {
+                $("#reset_hint_menu").attr("class", "reset_hint_menu_style");
+                $("#show_map_btn").css("opacity", "0.0");
+                reset_menu_shows = true;
+            }
         }
-        else {
-            $("#reset_hint_menu").attr("class", "reset_hint_menu_style");
-            reset_menu_shows = true;
-        }
-        
     });
 
-    // Map is show or hide
-    let map_shows = false;
+    $("#reset_hint_image").on("click", function(){
+        degree_need_initialized = true;
+        $("#reset_hint_menu").attr("class", "empty");
+        $("#show_map_btn").css("opacity", "1.0");
+        reset_menu_shows = false;
+    });
+
+    // Show/hide map
     $("#show_map_btn").on("click", function(){
-        if (map_shows) {
-            $("#my_map_back").attr("class", "empty");
+        if(!reset_menu_shows){
+            if (map_shows) {
+                $("#my_map_back").attr("class", "empty");
+                $("#reset_direction_btn").css("opacity", "1");
 
-            map_shows = false;
-        }
-        else {
-            // Update current center in map
-            if (map != null) {
-                map.setView({
-                    center: new Microsoft.Maps.Location(currPos.y, currPos.x), //Location center position
-                });
+                map_shows = false;
             }
+            else {
+                // Update current center in map
+                if (map != null) {
+                    map.setView({
+                        center: new Microsoft.Maps.Location(currPos.y, currPos.x), //Location center position
+                    });
+                }
 
-            $("#my_map_back").attr("class", "reset_hint_menu_style");
+                $("#my_map_back").attr("class", "reset_hint_menu_style");
+                $("#reset_direction_btn").css("opacity", "0");
 
-            map_shows = true;
+                map_shows = true;
+            }
         }
     });
 
@@ -424,8 +442,7 @@
             if (vecToDestInCamera.z < 0.0) {
                 $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_style");
                 $("#user_hint_bubble").attr("class", "user_hint_bubble_style");
-                $("#user_hint_bubble").text("目的地は後ろだよ！");
-                $("#user_hint_ok").attr("class", "empty");
+                $("#user_hint_bubble").text("ぎゃくだよ！　ふりかえって。");
 
                 // Show character image
                 $("#hint_character_img").css("background-image", "url('./img/squirrel_look_side.png')");
@@ -436,8 +453,7 @@
             {
                 $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_style");
                 $("#user_hint_bubble").attr("class", "user_hint_bubble_style");
-                $("#user_hint_bubble").text("目的地に着いたよ！");
-                $("#user_hint_ok").attr("class", "empty");
+                $("#user_hint_bubble").text("ついたよ！");
 
                 // Show character image
                 $("#hint_character_img").css("background-image", "url('./img/squirrel_laugh.png')");
