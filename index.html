@@ -69,7 +69,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- JQuery -->
 
-<!-- 3d vectors -->
+<!-- 3d vectors ：赤いピンを描くための関数-->
 <script type="importmap">
     {
       "imports": {
@@ -83,7 +83,7 @@
 <script src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=[AniMk5fCk4W1_RLIhL9R_sYQLrR2CSTZXeOGOcvczwyrJJx3cYtlPyR8oWt10aPl]' async defer></script>
 
 <script type="module">
-
+// マップゲット
     let map = null;
     window.GetMap=()=>{
         map = new Microsoft.Maps.Map('#my_map', {
@@ -93,9 +93,10 @@
         });
     }
 
+// 赤いピンは現実世界座標に繋がるカメラの画面に投影する3D計算のコード
     import * as THREE from 'three';
 
-    // Check if this is a mobile device
+    // Check if this is a mobile device　カメラは携帯か、パソコンかを確認する
     let isMobile = false;
     // device detection
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -103,24 +104,25 @@
         isMobile = true;
     }
 
-    // A point in 戶山公園
+    // 目的地の経度・緯度・高度
     let destLatitude = 35.7084631;
     let destLongitude = 139.7056623;
     let destAltitude = 64.2807633264114; // No altitude    
 
-    // Camera object
+    // カメラの高度
     let videoWidth = parseInt($("video").css("width"));
     let videoHeight = parseInt($("video").css("height"));
     let camera = new THREE.PerspectiveCamera(60, videoWidth / videoHeight, 0.1, 10000.0);
 
-    // Current position and destination
+    // 投影される前後の所在地の経度・緯度・高度
     let currPos = new THREE.Vector3(0.0, 0.0, 0.0);
     let destPos = new THREE.Vector3(destLongitude, destLatitude, destAltitude);
     let vecToDest = new THREE.Vector3(0.0, 0.0, 0.0);
+    // 距離の計算
     let vecToDestInCamera = new THREE.Vector4(0.0, 0.0, 0.0, 0.0);
     let vecToDestInCamera2 = new THREE.Vector4(0.0, 0.0, 0.0, 0.0);
 
-    // Add destination on map
+    // Add destination on map　マップ上目的地を設定（ピン）
     let destAddedToMap = false;
     let dest = null;
     let dest_pin = null;
@@ -138,7 +140,7 @@
                 visible: true    
             });
 
-            //Add the pushpin to the map
+            //Add the pushpin to the map　マップ上所在地を設定（青ピン）
             map.entities.push(dest_pin);
 
             curr_location = new Microsoft.Maps.Location(currPos.y, currPos.x);
@@ -155,22 +157,23 @@
             map.entities.push(curr_pos_pin);
         }
         else {
-            // Repeat until bing map api is loaded
-            setTimeout(addDestToMap, 1000);
+            // Repeat until bing map api is loaded　マイクロソフトのマップの読み取りを繰り返す
+            setTimeout(addDestToMap, 1000); //一秒ごとにマップ取得
         }
     }
     addDestToMap();
 
-    // Camera forward, right, up
+    // Camera forward, right, up カメラの座標を設定
     let cameraForward = new THREE.Vector3(0.0, 0.0, 0.0);
     let cameraRight = new THREE.Vector3(0.0, 0.0, 0.0);
     let cameraUp = new THREE.Vector3(0.0, 0.0, 0.0);
 
-    // Camera video on/off
+    // Camera video on/off　ユーザーがカメラを開く許可の設定
     let startCameraVideo = false;
 
     function turnOnCamera() {
         let userMedia = null;
+        //Mobile 携帯のカメラ
         if (isMobile) {
             userMedia = navigator.mediaDevices.getUserMedia(
                 {
@@ -184,6 +187,7 @@
                 });
         }
         else {
+            //パソコンのカメラ
             userMedia = navigator.mediaDevices.getUserMedia(
                 {
                     video:
@@ -195,7 +199,7 @@
                     audio: false
                 });
         }
-
+        //ユーザーからカメラの使用許可をもらったら、カメラが撮った画像を携帯・パソコンの画面に映る
         userMedia.then((localMediaStream) => {
             const video = document.querySelector("video");
             video.srcObject = localMediaStream;
@@ -208,7 +212,7 @@
         startCameraVideo = true;
     }
 
-    // Show user hint
+    // Show user hint リスの紹介言葉
     let curr_user_hint_index = 0;
     let user_hint_messages = new Array();
     user_hint_messages.push("こんにちは！　　　　ともだちのリスだよ！");
@@ -221,21 +225,21 @@
     user_hint_messages.push("さあ～じゅんびができたか？　いこう！！");
 
     $("#user_hint_ok").on("click", function () {
-
-        if (curr_user_hint_index == 6) {
+        // メッセージが終わる後、カメラはオンにする設定
+        if (curr_user_hint_index == 8) {
             turnOnCamera();
             $("#all_dests").attr("class", "all_dests_style");
         }
-
+        //配列でメッセージを表示する
         if (curr_user_hint_index < user_hint_messages.length) {
             $("#user_hint_bubble").text(user_hint_messages[curr_user_hint_index]);
             curr_user_hint_index = curr_user_hint_index + 1;
         }
         else {
-            // Hide the bubble
+            // Hide the bubble　リスの話が終わり、メッセージの吹き出しを隠す
             $("#user_hint_bubble_back").attr("class", "empty");
 
-            // Stop the animation
+            // Stop the animation　リスの口の動きを停止する設定
             $("#hint_character_img").attr("class", "hint_character_img_style");
 
             curr_user_hint_index = user_hint_messages.length + 1;
@@ -244,7 +248,7 @@
 
     let posHandle = 0;
 
-    // Position success
+    // Position success　所在地の取得
     function posSuccess(pos) {
         const crd = pos.coords;
         let currLatitude = crd.latitude;
@@ -263,6 +267,7 @@
             curr_location = new Microsoft.Maps.Location(currPos.y, currPos.x);
 
             // Remove curr pos pin and add again with new current position
+            //取得後の地図更新
             map.entities.remove(curr_pos_pin);
             
             curr_pos_pin = new Microsoft.Maps.Pushpin(curr_location, {
@@ -278,7 +283,7 @@
         }
     }
 
-    // Position fail
+    // Position fail　地図取得が失敗する時の設定
     function posFail(error) {
 
     }
@@ -291,16 +296,17 @@
 
     posHandle = navigator.geolocation.watchPosition(posSuccess, posFail, posOptions);
 
-    // For calculating orientation
+    // For calculating orientation　カメラの方向を設定
     let degree_need_initialized = true;
     let init_alpha = 0.0;
     let init_beta = 0.0;
     let init_gamma = 0.0;
 
-    // Show/hide reset menu
+    // Show/hide reset menu　猫のコンパスの設定
     let reset_menu_shows = false;
     let map_shows = false;
     $("#reset_direction_btn").on("click", function () {
+        //マップが出たら、猫が消える
         if(!map_shows){
             if (reset_menu_shows) {
                 $("#reset_hint_menu").attr("class", "empty");
@@ -308,13 +314,14 @@
                 reset_menu_shows = false;
             }
             else {
+            //コンパスが出たら、ブタが消える
                 $("#reset_hint_menu").attr("class", "reset_hint_menu_style");
                 $("#show_map_btn").css("opacity", "0.0");
                 reset_menu_shows = true;
             }
         }
     });
-
+    // コンパスが出たら、北の方向を設定する
     $("#reset_hint_image").on("click", function(){
         degree_need_initialized = true;
         $("#reset_hint_menu").attr("class", "empty");
@@ -322,7 +329,7 @@
         reset_menu_shows = false;
     });
 
-    // Show/hide map
+    // Show/hide map　ブタのマップ設定
     $("#show_map_btn").on("click", function(){
         if(!reset_menu_shows){
             if (map_shows) {
@@ -332,7 +339,7 @@
                 map_shows = false;
             }
             else {
-                // Update current center in map
+                // Update current center in map　先生の事例；マップと所在地を連携する
                 if (map != null) {
                     curr_location = new Microsoft.Maps.Location(currPos.y, currPos.x);
 
@@ -349,14 +356,15 @@
         }
     });
 
-    // Device orientation
+    // Device orientation　携帯の向き情報を取得する
+    //https://web.dev/articles/device-orientation?hl=ja
     function dirHandler(event) {
-        let absolute = event.absolute;
-        let deg_alpha = event.alpha;
+        let absolute = event.absolute; //絶対方向、相対方向
+        let deg_alpha = event.alpha; 
         let deg_beta = event.beta;
         let deg_gamma = event.gamma;
 
-        // Save first get orientation
+        // Save first get orientation ねこのコンパスにて調整する
         if (degree_need_initialized) {
             init_alpha = deg_alpha;
             init_beta = deg_beta;
@@ -364,23 +372,24 @@
 
             degree_need_initialized = false;
         }
-
+        //相対方向を調整
         if (absolute == false) {
             deg_alpha -= init_alpha;
             deg_beta -= init_beta;
             deg_gamma -= init_gamma;
         }
 
-        // Degree to radians
+        // Degree to radians　角度からPI
         let alpha = deg_alpha / 180.0 * Math.PI;
         let beta = deg_beta / 180.0 * Math.PI;
         let gamma = deg_gamma / 180.0 * Math.PI;
 
-        // Create transform matrix
+        // Create transform matrix　回転
         let trans = new THREE.Euler(
             beta, gamma, alpha, "ZXY"
         );
 
+        //携帯の向きを初期状態から現在の向きに回転させる
         // Calculate forward (-z)
         cameraForward.x = 0.0;
         cameraForward.y = 0.0;
@@ -402,25 +411,25 @@
         cameraUp.applyEuler(trans);
         cameraUp.normalize();
 
-        // Vector to destination
+        // Vector to destination　携帯の現在地から目的地への方向
         vecToDest.subVectors(destPos, currPos);
 
-        // Convert latitude and lonitude to meters
+        // Convert latitude and lonitude to meters　軽度・緯度からメートルに変更
         let lat_in_rad = currPos.y / 180.0 * Math.PI;
         vecToDest.x = Math.cos(lat_in_rad) * 111320.0 * vecToDest.x;
         vecToDest.y = vecToDest.y * 110574.0;
 
-        // Transform latitude, longitude, altitude to camera space
+        // Transform latitude, longitude, altitude to camera space　現実世界の座標をカメラ世界の座標系に変換する
         vecToDestInCamera.x = vecToDest.dot(cameraRight);
         vecToDestInCamera.y = vecToDest.dot(cameraUp);
         vecToDestInCamera.z = vecToDest.dot(cameraForward);
         vecToDestInCamera.w = 1.0;
 
         vecToDestInCamera2.copy(vecToDestInCamera);
-        vecToDestInCamera2.applyMatrix4(camera.projectionMatrix);
-        vecToDestInCamera2.divideScalar(vecToDestInCamera2.w);
+        vecToDestInCamera2.applyMatrix4(camera.projectionMatrix);//カメラ座標系への投影
+        vecToDestInCamera2.divideScalar(vecToDestInCamera2.w);//遠近法の表現
 
-        // Move the dest around camera video
+        // Move the dest around camera video　映った画像のピクセルを調整する
         let xCoord = (vecToDestInCamera2.x * -1.0) * 0.5 + 0.5; // -1 ~ 1 -> 0 ~ 1
         let yCoord = (vecToDestInCamera2.y * -1.0) * 0.5 + 0.5; // -1 ~ 1 -> 0 ~ 1
         let xPosInVideo = xCoord * videoWidth;  // 0 ~ 1 -> 0 ~ width
@@ -431,12 +440,15 @@
         let destHeight = parseInt($("#dest_01").css("height"));
         let isDestOutsideVideo = (xPosInVideo < videoPaddingHor || xPosInVideo > videoWidth - videoPaddingHor ||
                                   yPosInVideo < videoPaddingVer || yPosInVideo > videoHeight - videoPaddingVer);
+        
+        //赤いピンはフレーム内にする
         let xPosInVideoClamp = Math.max(Math.min(xPosInVideo, videoWidth - videoPaddingHor), videoPaddingHor);
         let yPosInVideoClamp = videoHeight - Math.max(Math.min(yPosInVideo, videoHeight - videoPaddingVer), videoPaddingVer);
 
+        //赤いピンの向き・角度を計算する
         let tanValue = vecToDestInCamera2.x / vecToDestInCamera2.y;
         let tanAngle = Math.atan(tanValue);
-
+        
         let tanAngleInDegree = tanAngle / Math.PI * 180.0;
         if (yPosInVideo == 0.0) {
             if (xPosInVideo > 0.0) {
@@ -451,14 +463,17 @@
             tanAngle = tanAngle + Math.PI;
         }
 
+        // 赤いピンが画面外にあるとき、目的地をさすように赤いピンを回転させる
         if (isDestOutsideVideo) {
             $("#dest_01").css({
                 left: xPosInVideoClamp - destWidth / 2,
                 top: yPosInVideoClamp - destHeight / 2,
-                transform: 'rotate(' + tanAngle + 'rad)'
+                transform: 'rotate(' + tanAngle + 'rad)'//回転
             });
             $("#dest_01_circle").attr("class", "empty");
         }
+
+        // 赤いピンが画面中にある時、赤いピンを回転しないまま、目的地のところに移動させる
         else {
             $("#dest_01").css({
                 left: xPosInVideoClamp - destWidth / 2,
@@ -467,33 +482,35 @@
             });
             $("#dest_01_circle").attr("class", "dest_circle_style");
         }
-
+        //目的地までの距離を計算する
         let vec2ToDest = new THREE.Vector2(vecToDest.x, vecToDest.y);
         let distToDest = vec2ToDest.length();
         let distToApproach = 10.0; // 10 meter
 
-        // Show hint if user faces wrong direction
+        // リスの話しが終わった後
         if (curr_user_hint_index > user_hint_messages.length) {
 
-            // Hide dest hint if it is on opposite side of current view
+            // 目的地と逆方向の時、赤いピンを隠す
             if (vecToDestInCamera.z < 0.0) {
                 $("#all_dests").attr("class", "empty");
             }
+            // 目的地が画面中の時、赤いピンを表示する
             else {
                 $("#all_dests").attr("class", "all_dests_style");
             }
 
+            // Show hint if user faces wrong direction　目的地と逆方向の時、逆方向の事をユーザーにお知らせする
             // See direction
             if (vecToDestInCamera.z < 0.0) {
                 $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_style");
                 $("#user_hint_bubble").attr("class", "user_hint_bubble_style");
-                $("#user_hint_bubble").text("ぎゃくだよ！　ふりかえって。");
+                $("#user_hint_bubble").text("ぎゃくだよ！　　　　ふりかえって。");
 
                 // Show character image
                 $("#hint_character_img").css("background-image", "url('./img/squirrel_look_side.png')");
             }
 
-            // See distance
+            // See distance　目的地に近く着いたとき
             else if (distToDest < distToApproach)
             {
                 $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_style");
