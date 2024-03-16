@@ -64,8 +64,9 @@ body {
 .all_dests_style {
     width: 0px;
     height: 0px;
+    top: -800px;
+    left: -800px;
     position: relative;
-    transform: translate(-800px, -800px);
     background-color: rgba(0,0,0,0);
     z-index: 2;
 }
@@ -90,6 +91,38 @@ body {
     transform-style: preserve-3d;
     z-index: 4;
     animation: dest_pot_float 5000ms infinite;
+}
+
+/* score & score board */
+.score_board_back_style {
+    width: 0px;
+    height: 0px;
+    position: relative;
+    left: -650px;
+    top: -700px;
+    z-index: 3;
+}
+.score_board_style {
+    content: "";
+    position: relative;
+    width: 600px;
+    height: 150px;
+    border-bottom-width: 5px;
+    border-bottom: red;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+}
+
+.score_style {
+    content: "";
+    width: 109px;
+    height: 138px;
+    background-image: url("../img/seed.png");
+    background-size: cover;
+    background-position: center;
 }
 
 /* frame of video */

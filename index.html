@@ -19,6 +19,11 @@
                     <div id="dest_01_circle" class="dest_circle_style"></div>
                 </div>
             </div>
+            <div class="score_board_back_style">
+                <div id="score_board" class="score_board_style">
+                    <div class="score_style"></div>
+                </div>
+            </div>
         </div>
         <div class="video_frame_back_style">
             <div class="video_frame_style"></div>
@@ -339,7 +344,7 @@
         // Calculate forward (-z)
         cameraForward.x = 0.0;
         cameraForward.y = 0.0;
-        cameraForward.z = -1.0;
+        cameraForward.z = 1.0;
         cameraForward.applyEuler(trans);
         cameraForward.normalize();
 
