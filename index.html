@@ -108,8 +108,8 @@
     }
 
     // 目的地の経度・緯度・高度
-    let destLatitude = 35.7084631;
-    let destLongitude = 139.7056623;
+    let destLatitude = 35.7102043;
+    let destLongitude = 139.7042221;
     let destAltitude = 64.2807633264114; // No altitude    
 
     // カメラの高度
@@ -537,7 +537,7 @@
 
     // Hide title and show character
     let title_opacity = 1.0;
-    let title_background_fadeout_time = 2000.0; // 2000 ms
+    let title_background_fadeout_time = 500.0; // 500 ms
     let title_background_fadeout_update_interval = 10;  // 100 ms ごとにアップデート
     window.hideTitleAndShowCharacter = () => {
         title_opacity -= 1.0 / title_background_fadeout_time * title_background_fadeout_update_interval;
