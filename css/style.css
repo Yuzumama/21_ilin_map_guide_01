@@ -324,7 +324,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0.0;
 }
 
 .reset_hint_image_style {
