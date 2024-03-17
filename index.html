@@ -8,7 +8,7 @@
 <body>
 
     <div class="main_back_style">
-        <div class="video_back_style">
+        <div id="video_back" class="video_back_style">
             <div class="video_range_style">
                 <video autoplay class="video_style"></video>
             </div>
@@ -33,17 +33,19 @@
             <button id="show_map_btn" class="map_btn_style"></button>
         </div>
         <div id="hint_character_back" class="hint_character_back_style">
-            <div id="hint_character_img" class="hint_character_anim_style">
+            <div id="hint_character_img" class="hint_character_img_style">
             </div>
         </div>
-        <div id="user_hint_bubble_back" class="user_hint_bubble_back_style">
+        <div id="user_hint_bubble_back" class="empty">
             <div id="user_hint_bubble" class="user_hint_bubble_style">
                 ようこそ、<br>
                 もりのあんぜんきち！
             </div>
             <div id="user_hint_ok" class="user_hint_ok_style"></div>
         </div>
-
+        <div id="title_background" class="title_background_style">
+            <div id="title_start" class="title_start_style"></div>
+        </div>        
     </div>
     <div id="reset_hint_menu" class="empty">
         <div class="reset_hint_menu_frame_style">
@@ -62,6 +64,7 @@
     <div id="my_map_back" class="empty">
         <div id="my_map" class="my_map_style"></div>
     </div>
+    
 
 </body>
 
@@ -531,6 +534,38 @@
     }
 
     window.addEventListener("deviceorientation", dirHandler);
+
+    // Hide title and show character
+    let title_opacity = 1.0;
+    let title_background_fadeout_time = 2000.0; // 2000 ms
+    let title_background_fadeout_update_interval = 10;  // 100 ms ごとにアップデート
+    window.hideTitleAndShowCharacter = () => {
+        title_opacity -= 1.0 / title_background_fadeout_time * title_background_fadeout_update_interval;
+
+        if(title_opacity < 0.0) {
+            title_opacity = 0.0;
+        }
+
+        $("#title_background").css({
+            opacity: title_opacity
+        });
+        $("#hint_character_back").css({
+            opacity: 1.0 - title_opacity
+        });
+
+        if(title_opacity > 0.0) {
+            setTimeout("hideTitleAndShowCharacter();", title_background_fadeout_update_interval);
+        }
+
+        else {
+            $("#user_hint_bubble_back").attr("class", "user_hint_bubble_back_style");
+            $("#hint_character_img").attr("class", "hint_character_anim_style");
+        }
+    }
+    
+    $("#title_background").on("click", function() {
+        hideTitleAndShowCharacter();
+    });
 
 </script>
 
